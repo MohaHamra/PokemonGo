@@ -9,6 +9,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,9 +31,15 @@ public class pokemonDAO {
             pokemon pok = new pokemon();
             if (conn!=null)
             {
+                List<pokemon> lista_pokemons = devolverPokemons();
+                int min = 1;
+                int max = lista_pokemons.size();
+                int range = (max - min) + 1;
+                int random = (int)(Math.random() * range) + min;
+                
                 Statement stmt = conn.createStatement();
                 
-                String query = "SELECT * FROM tu_tabla ORDER BY RAND() LIMIT 1;";
+                String query = "SELECT * FROM pokedex where num = " + random + ";";
                 ResultSet res = stmt.executeQuery(query);
            
                 int num = res.getInt("num");
@@ -45,6 +55,30 @@ public class pokemonDAO {
             {
                 return null;
             }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return null;
+    }
+    
+    public List<pokemon> devolverPokemons(){
+        try {
+            Connection conn;
+            conn = DBConnect.getConnection();
+            List<pokemon> lista_pokemons = new ArrayList();
+            pokemon pok;
+            Statement stmt = conn.createStatement();
+            String query = "SELECT * from pokedex";
+            ResultSet cursor = stmt.executeQuery(query);
+            
+            while(cursor.next()){
+                int num = cursor.getInt("num");
+                String name = cursor.getString("name");
+                String type = cursor.getString("type");
+                pok = new pokemon(num, name, type);
+                lista_pokemons.add(pok);
+            }
+            return lista_pokemons;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

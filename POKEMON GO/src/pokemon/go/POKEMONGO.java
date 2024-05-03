@@ -107,7 +107,7 @@ public class POKEMONGO {
             entrenador entr = new entrenador(nom, contra);
 
             
-            if (catalogo.exsisteixEntrenador(nom) == null){
+            if (catalogo.devolverEntrenador(nom) == null){
                 catalogo.altraEntrenador(entr);
             }
             else{
@@ -127,7 +127,7 @@ public class POKEMONGO {
             String nom = sc.nextLine();
             
             entrenadorDAO catalogo = new entrenadorDAO();
-            entrenador entr = catalogo.exsisteixEntrenador(nom);
+            entrenador entr = catalogo.devolverEntrenador(nom);
             if (entr != null){
                 catalogo.borrarEntrenador(entr);
             }
@@ -190,7 +190,7 @@ public class POKEMONGO {
             
             entrenadorDAO dao = new entrenadorDAO();
             entrenador entr = new entrenador();
-            entr = dao.exsisteixEntrenador(nom);
+            entr = dao.devolverEntrenador(nom);
             if(entr != null){
                 if(entr.getPassword().equals(contra)){
                     System.out.println("Bienvenido " + nom);
@@ -208,5 +208,13 @@ public class POKEMONGO {
             System.out.println(ex.getMessage());
         }
     }
+     
+    public static int randomFuerzaCombate(){
+        int min = 1;
+        int max = 100;
+        int range = (max - min) + 1;
+        int random = (int)(Math.random() * range) + min;
+        return random;
+     }
     
 }

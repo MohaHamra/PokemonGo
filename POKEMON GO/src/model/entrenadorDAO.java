@@ -51,7 +51,7 @@ public class entrenadorDAO {
         return rows;
     }
     
-    public entrenador exsisteixEntrenador(String name){
+    public boolean exsisteixEntrenador(String name){
         try {
             conn = DBConnect.getConnection();
             entrenador ent = new entrenador();
@@ -70,16 +70,16 @@ public class entrenadorDAO {
                 ent.setId(id);
                 ent.setName(name);
                 ent.setPassword(password);
-                return ent;
+                return true;
             }
             else
             {
-                return null;
+                return false;
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return null;
+        return false;
     }
     
     public entrenador borrarEntrenador(entrenador trainer){
@@ -94,7 +94,8 @@ public class entrenadorDAO {
                 String query = "DELETE from entrenador where id = " + id;
                 PreparedStatement prepared_query;
                 prepared_query = conn.prepareStatement(query);
-                prepared_query.execute();
+                prepared_query.executeUpdate();
+                
                 return ent;
             }
             else

@@ -55,7 +55,7 @@ public class pokemon {
 
     @Override
     public int hashCode() {
-        int hash = 5;
+        int hash = 3;
         return hash;
     }
 
@@ -71,10 +71,9 @@ public class pokemon {
             return false;
         }
         final pokemon other = (pokemon) obj;
-        if (this.numero_pokedex != other.numero_pokedex) {
-            return false;
-        }
-        return this.nombre.equalsIgnoreCase(other.nombre);
+        return this.numero_pokedex == other.numero_pokedex;
     }
+
+    
     
 }
