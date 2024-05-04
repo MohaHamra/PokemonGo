@@ -84,4 +84,12 @@ public class pokemonDAO {
         }
         return null;
     }
+    
+    public int randomFuerzaCombate(){
+        int min = 1;
+        int max = 100;
+        int range = (max - min) + 1;
+        int fuerza = (int)(Math.random() * range) + min;
+        return fuerza;
+     }
 }

@@ -17,6 +17,9 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import model.entrenador;
 import model.entrenadorDAO;
+import model.mochilaDAO;
+import model.pokemon;
+import model.pokemonDAO;
 
 /**
  *
@@ -61,14 +64,14 @@ public class POKEMONGO {
                 case 3:                    
                     ConsultarEntrenador();
                     break;  
-                case 5:
+                case 4:
                     TodosEntrenadores();
                     break;
-                case 6:
+                case 5:
                     CazarPokemon();
-                case 7:
+                case 6:
                     ListarPokemonsCazados();
-                case 8:
+                case 7:
                     ListarPokemonsExsistentes();
                 }   
             }while(!exit);
@@ -172,8 +175,36 @@ public class POKEMONGO {
     }
 
     private void CazarPokemon() {
-        System.out.println("Has elegido la opcion CAZAR POKEMON!");
-        
+        try {
+            System.out.println("Has elegido la opcion CAZAR POKEMON!");
+            Scanner sc = new Scanner(System.in );
+            System.out.println("Introduce el id:");
+            int id_ent = sc.nextInt();
+            
+            pokemonDAO inventario_pok = new pokemonDAO();
+            pokemon pok = inventario_pok.getPokemonRandom();
+            int num_pok = pok.getNumero_pokedex();
+            int cp = inventario_pok.randomFuerzaCombate();
+            
+            String nombre_pok = pok.getNombre();
+            mochilaDAO inventari = new mochilaDAO();
+            
+            if(inventari.darCaptura(id_ent, num_pok, cp)){
+                System.out.println("Pokemon capturado!");
+                FitxerCaratula fitxer = new FitxerCaratula("default.pok");
+                List<String> lineas = fitxer.cargarCaratula();
+                for (String linea : lineas) {
+                    System.out.println(linea);
+                }   
+            }
+            else{
+                System.out.println("No ha sido posible capturar el pokemon!");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     private void ListarPokemonsExsistentes() {
@@ -208,13 +239,5 @@ public class POKEMONGO {
             System.out.println(ex.getMessage());
         }
     }
-     
-    public static int randomFuerzaCombate(){
-        int min = 1;
-        int max = 100;
-        int range = (max - min) + 1;
-        int random = (int)(Math.random() * range) + min;
-        return random;
-     }
     
 }
